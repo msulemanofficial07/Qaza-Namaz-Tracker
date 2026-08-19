@@ -152,7 +152,26 @@ const PRAYERS=[
 const KEY="qaza_tracker_v1";
 let data=load();
 function fresh(){return {version:1,onboarding:false,theme:"light",prayers:Object.fromEntries(PRAYERS.map(p=>[p.id,{total:0,completed:0}])),history:{}}}
-function load(){try{return Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||"null")||{})}catch{return fresh()}}
+function normalize(raw){
+ const base=fresh(), source=raw&&typeof raw==="object"?raw:{};
+ base.onboarding=source.onboarding===true;
+ base.theme=source.theme==="dark"?"dark":"light";
+ PRAYERS.forEach(p=>{
+  const saved=source.prayers&&source.prayers[p.id]||{};
+  const completed=Math.max(0,Math.floor(Number(saved.completed)||0));
+  base.prayers[p.id]={total:Math.max(completed,Math.floor(Number(saved.total)||0)),completed};
+ });
+ if(source.history&&typeof source.history==="object"){
+  Object.entries(source.history).forEach(([date,entries])=>{
+   if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!entries||typeof entries!=="object")return;
+   const valid={};
+   PRAYERS.forEach(p=>{const count=Math.max(0,Math.floor(Number(entries[p.id])||0));if(count)valid[p.id]=count});
+   if(Object.keys(valid).length)base.history[date]=valid;
+  });
+ }
+ return base;
+}
+function load(){try{return normalize(JSON.parse(localStorage.getItem(KEY)||"null"))}catch{return fresh()}}
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function fmt(n){return new Intl.NumberFormat().format(n)}
 function pct(done,total){return total>0?Math.min(100,(done/total)*100):0}
@@ -248,10 +267,12 @@ function exportData(){
  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="qaza-namaz-backup.json";a.click();URL.revokeObjectURL(a.href);showToast("Backup exported")
 }
 document.getElementById("restoreInput").addEventListener("change",e=>{
- const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.prayers||!x.history)throw 0;if(confirm("Replace current tracker with this backup?")){data=Object.assign(fresh(),x);save();render();showToast("Backup restored")}}catch{alert("Invalid backup file.")}e.target.value=""};r.readAsText(file)
+ const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.prayers||!x.history)throw 0;if(confirm("Replace current tracker with this backup?")){data=normalize(x);save();render();showToast("Backup restored")}}catch{alert("Invalid backup file.")}e.target.value=""};r.readAsText(file)
 });
 function scrollToPrayers(){document.getElementById("prayerGrid").scrollIntoView({behavior:"smooth"})}
 document.querySelectorAll(".nav button").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.getElementById(btn.dataset.view).classList.add("active");window.scrollTo({top:0,behavior:"smooth"})}));
+document.getElementById("modal").addEventListener("click",event=>{if(event.target.id==="modal")closeModal()});
+document.addEventListener("keydown",event=>{if(event.key==="Escape")closeModal()});
 document.getElementById("themeBtn").addEventListener("click",()=>{data.theme=data.theme==="dark"?"light":"dark";document.body.classList.toggle("dark",data.theme==="dark");document.getElementById("themeBtn").textContent=data.theme==="dark"?"☀️":"🌙";save()});
 function initTheme(){document.body.classList.toggle("dark",data.theme==="dark");document.getElementById("themeBtn").textContent=data.theme==="dark"?"☀️":"🌙"}
 initTheme();render();if(!data.onboarding)setTimeout(openSetup,250);
