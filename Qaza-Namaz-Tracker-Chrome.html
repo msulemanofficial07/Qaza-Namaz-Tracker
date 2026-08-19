@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<meta name="description" content="A private, mobile-friendly Qaza Namaz Tracker for tracking estimated missed prayers.">
+<title>Qaza Namaz Tracker</title>
+<style>
+:root{
+  --bg:#f4f7f6;--card:#fff;--text:#172321;--muted:#6b7a76;--primary:#0f766e;
+  --primary2:#115e59;--line:#e1e9e6;--soft:#e8f4f1;--danger:#b42318;--shadow:0 10px 30px rgba(20,55,50,.08);
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit} button{cursor:pointer}
+.app{max-width:1080px;margin:auto;padding:16px 16px 92px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0 18px}
+.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:44px;height:44px;border-radius:14px;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:22px;box-shadow:var(--shadow)}
+.brand h1{font-size:18px;margin:0}.brand small{color:var(--muted)}
+.icon-btn{border:1px solid var(--line);background:var(--card);width:42px;height:42px;border-radius:13px}
+.hero{background:linear-gradient(135deg,#0f766e,#134e4a);color:white;border-radius:24px;padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:180px;height:180px;border:1px solid rgba(255,255,255,.12);border-radius:50%;right:-65px;top:-65px}
+.hero h2{margin:0 0 7px;font-size:24px}.hero p{margin:0;color:#d8f2ed;font-size:14px}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);border-radius:15px;padding:13px}.stat b{display:block;font-size:21px}.stat span{font-size:11px;color:#d8f2ed}
+.progress-wrap{margin-top:18px}.progress-track{height:10px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden}.progress-fill{height:100%;background:#fff;border-radius:99px;transition:width .25s}.progress-meta{display:flex;justify-content:space-between;margin-top:7px;font-size:12px;color:#d8f2ed}
+.section{margin-top:20px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:11px}.section h3{margin:0;font-size:18px}.muted{color:var(--muted);font-size:13px}
+.today{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:var(--shadow)}
+.today-main{display:flex;align-items:center;justify-content:space-between;gap:15px}.today-number{font-size:32px;font-weight:800}.today-label{color:var(--muted);font-size:12px}
+.today-breakdown{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}.chip{background:var(--soft);color:var(--primary2);border-radius:999px;padding:7px 10px;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:var(--shadow)}
+.prayer-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.prayer-name{display:flex;gap:10px;align-items:center}.prayer-emoji{font-size:25px}.prayer-name h4{margin:0;font-size:17px}.prayer-name small{color:var(--muted)}
+.percent{font-weight:800;color:var(--primary);font-size:15px}.bar{height:8px;background:#edf2f0;border-radius:99px;overflow:hidden;margin:14px 0}.bar > div{height:100%;background:var(--primary);border-radius:99px;transition:width .25s}
+.numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.num{background:#f7faf9;border-radius:12px;padding:9px}.num span{display:block;color:var(--muted);font-size:10px}.num b{font-size:15px}
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}.btn{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:11px;padding:10px 7px;font-weight:700;font-size:13px}.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn:active{transform:translateY(1px)}
+.custom-row{display:flex;gap:7px;margin-top:8px}.custom-row input{min-width:0;flex:1;border:1px solid var(--line);border-radius:11px;padding:10px 11px;outline:none}.custom-row input:focus{border-color:var(--primary)}
+.completed{margin-top:10px;color:var(--primary);font-size:12px;font-weight:700}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:var(--shadow)}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.mini{background:#f7faf9;border-radius:14px;padding:13px}.mini b{font-size:20px;display:block}.mini span{font-size:11px;color:var(--muted)}
+.history-item{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.history-item:last-child{border-bottom:0}.history-date{font-weight:700}.history-detail{color:var(--muted);font-size:12px;margin-top:3px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);z-index:20}.nav-inner{max-width:600px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);padding:7px 8px env(safe-area-inset-bottom)}
+.nav button{border:0;background:transparent;color:var(--muted);padding:7px 3px;border-radius:12px;font-size:11px}.nav button.active{color:var(--primary);font-weight:800;background:var(--soft)}.nav-icon{display:block;font-size:18px;margin-bottom:2px}
+.view{display:none}.view.active{display:block}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:none;align-items:flex-end;justify-content:center;padding:12px}.modal-backdrop.show{display:flex}.modal{background:var(--card);width:min(560px,100%);border-radius:22px;padding:19px;max-height:90vh;overflow:auto}.modal h3{margin:0 0 5px}.modal p{color:var(--muted);font-size:13px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}.field input{width:100%;padding:11px;border:1px solid var(--line);border-radius:11px;outline:none}.modal-actions{display:flex;gap:8px;margin-top:16px}.modal-actions .btn{flex:1}
+.notice{font-size:11px;line-height:1.5;color:var(--muted);padding:12px 2px;text-align:center}.empty{text-align:center;padding:20px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%) translateY(15px);background:#172321;color:#fff;padding:10px 14px;border-radius:999px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:80;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+body.dark{--bg:#0d1715;--card:#14211e;--text:#edf6f3;--muted:#9eb1ac;--line:#263a35;--soft:#173a35;--shadow:0 10px 30px rgba(0,0,0,.25)} body.dark .btn{background:#182824;color:var(--text)} body.dark .btn.primary{background:var(--primary);color:#fff} body.dark .num,body.dark .mini{background:#192a26} body.dark .nav{background:rgba(20,33,30,.94)}
+@media(max-width:680px){.app{padding:12px 12px 90px}.summary{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.hero{border-radius:20px}.hero h2{font-size:22px}.form-grid{grid-template-columns:1fr 1fr}.stat-grid{grid-template-columns:1fr 1fr}.stat-grid .mini:last-child{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><div class="brand-icon">🕌</div><div><h1>Qaza Namaz Tracker</h1><small>Track • Complete • Progress</small></div></div>
+  <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">🌙</button>
+</header>
+
+<main>
+<section id="home" class="view active">
+  <div class="hero">
+    <h2>Your Qaza Journey</h2><p>Every completed prayer moves your remaining count closer to zero.</p>
+    <div class="summary">
+      <div class="stat"><b id="total">0</b><span>Total Qaza</span></div>
+      <div class="stat"><b id="completed">0</b><span>Completed</span></div>
+      <div class="stat"><b id="remaining">0</b><span>Remaining</span></div>
+      <div class="stat"><b id="overallPct">0%</b><span>Progress</span></div>
+    </div>
+    <div class="progress-wrap"><div class="progress-track"><div class="progress-fill" id="overallBar" style="width:0%"></div></div><div class="progress-meta"><span id="overallText">0 completed</span><span id="overallText2">0 remaining</span></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h3>📅 Today's Progress</h3><span class="muted" id="todayDate"></span></div>
+    <div class="today"><div class="today-main"><div><div class="today-number" id="todayTotal">0</div><div class="today-label">Qaza recorded today</div></div><button class="btn primary" onclick="scrollToPrayers()">Add Qaza</button></div><div class="today-breakdown" id="todayBreakdown"><span class="chip">No entries yet</span></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><h3>🕌 Your Prayers</h3><span class="muted">Tap to record</span></div>
+    <div class="grid" id="prayerGrid"></div>
+  </div>
+  <div class="notice">Qaza Namaz Tracker is a personal tracking tool, not a source of religious rulings. For fiqh questions, consult a qualified Islamic scholar.</div>
+</section>
+
+<section id="stats" class="view">
+  <div class="section-head"><h3>📊 Statistics</h3></div>
+  <div class="panel">
+    <div class="stat-grid">
+      <div class="mini"><b id="sCompleted">0</b><span>Total completed</span></div>
+      <div class="mini"><b id="sRemaining">0</b><span>Total remaining</span></div>
+      <div class="mini"><b id="sPct">0%</b><span>Overall progress</span></div>
+      <div class="mini"><b id="sToday">0</b><span>Today</span></div>
+      <div class="mini"><b id="sWeek">0</b><span>This week</span></div>
+      <div class="mini"><b id="sMonth">0</b><span>This month</span></div>
+      <div class="mini"><b id="sAvg">0</b><span>Average/day</span></div>
+    </div>
+  </div>
+  <div class="section"><div class="section-head"><h3>Prayer Progress</h3></div><div class="panel" id="statsPrayers"></div></div>
+</section>
+
+<section id="history" class="view">
+  <div class="section-head"><h3>📅 History</h3><button class="btn" onclick="exportData()">Backup</button></div>
+  <div class="panel" id="historyList"></div>
+</section>
+
+<section id="settings" class="view">
+  <div class="section-head"><h3>⚙️ Settings</h3></div>
+  <div class="panel">
+    <button class="btn primary" style="width:100%;margin-bottom:8px" onclick="openSetup()">Adjust Qaza Counts</button>
+    <button class="btn" style="width:100%;margin-bottom:8px" onclick="document.getElementById('restoreInput').click()">Restore Backup</button>
+    <button class="btn" style="width:100%;margin-bottom:8px" onclick="exportData()">Export Backup</button>
+    <button class="btn" style="width:100%;color:var(--danger)" onclick="resetTracker()">Reset Tracker</button>
+    <input type="file" id="restoreInput" accept=".json,application/json" hidden>
+  </div>
+  <div class="section panel">
+    <h3 style="margin-top:0">About</h3>
+    <p class="muted">Your basic tracker data is stored locally in this browser. No account is required for this demo.</p>
+    <p class="notice">For Islamic rulings about missed prayers, calculation, or school-specific fiqh, consult a qualified scholar.</p>
+    <div class="panel" style="margin-top:12px;background:var(--soft);box-shadow:none">
+      <h4 style="margin:0 0 8px">Developer Contact</h4>
+      <p style="margin:4px 0"><b>M Suleman : Web Designer.</b></p>
+      <p style="margin:4px 0">📞 0340 4714747</p>
+      <p style="margin:4px 0">✉️ msulemanofficial07@gmail.com</p>
+    </div>
+  </div>
+</section>
+</main>
+</div>
+
+<nav class="nav"><div class="nav-inner">
+  <button class="active" data-view="home"><span class="nav-icon">🏠</span>Home</button>
+  <button data-view="stats"><span class="nav-icon">📊</span>Stats</button>
+  <button data-view="history"><span class="nav-icon">📅</span>History</button>
+  <button data-view="settings"><span class="nav-icon">⚙️</span>Settings</button>
+</div></nav>
+
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <h3>Set Your Qaza Count</h3><p>Enter your own estimated remaining count for each prayer. Default values are zero.</p>
+    <div class="form-grid" id="setupFields"></div>
+    <div class="modal-actions"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="saveSetup()">Save & Start</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const PRAYERS=[
+ {id:"fajr",name:"Fajr",emoji:"🌅"},{id:"dhuhr",name:"Dhuhr",emoji:"☀️"},
+ {id:"asr",name:"Asr",emoji:"🌇"},{id:"maghrib",name:"Maghrib",emoji:"🌆"},
+ {id:"isha",name:"Isha",emoji:"🌙"},{id:"witr",name:"Witr",emoji:"⭐"}
+];
+const KEY="qaza_tracker_v1";
+let data=load();
+function fresh(){return {version:1,onboarding:false,theme:"light",prayers:Object.fromEntries(PRAYERS.map(p=>[p.id,{total:0,completed:0}])),history:{}}}
+function load(){try{return Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||"null")||{})}catch{return fresh()}}
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function fmt(n){return new Intl.NumberFormat().format(n)}
+function pct(done,total){return total>0?Math.min(100,(done/total)*100):0}
+function todayKey(d=new Date()){return d.toISOString().slice(0,10)}
+function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>t.classList.remove("show"),1800)}
+function totals(){
+ let total=0,completed=0;
+ PRAYERS.forEach(p=>{total+=Number(data.prayers[p.id].total)||0;completed+=Number(data.prayers[p.id].completed)||0});
+ return {total,completed,remaining:Math.max(0,total-completed)};
+}
+function add(id,amount){
+ amount=Math.floor(Number(amount)||0); if(amount<=0)return;
+ const p=data.prayers[id], rem=Math.max(0,p.total-p.completed), actual=Math.min(amount,rem);
+ if(actual<=0){showToast("This prayer is already complete.");return}
+ p.completed+=actual;
+ const k=todayKey();
+ if(!data.history[k])data.history[k]={};
+ data.history[k][id]=(data.history[k][id]||0)+actual;
+ save(); render(); showToast(`+${actual} ${PRAYERS.find(x=>x.id===id).name} recorded`);
+}
+function render(){
+ const t=totals(), progress=pct(t.completed,t.total);
+ ["total","completed","remaining"].forEach(id=>document.getElementById(id).textContent=fmt(t[id]));
+ document.getElementById("overallPct").textContent=progress.toFixed(progress<10&&progress>0?2:progress%1?1:0)+"%";
+ document.getElementById("overallBar").style.width=progress+"%";
+ document.getElementById("overallText").textContent=fmt(t.completed)+" completed";
+ document.getElementById("overallText2").textContent=fmt(t.remaining)+" remaining";
+ renderPrayers(); renderToday(); renderStats(); renderHistory();
+}
+function renderPrayers(){
+ const grid=document.getElementById("prayerGrid");grid.innerHTML="";
+ PRAYERS.forEach(p=>{
+  const x=data.prayers[p.id], rem=Math.max(0,x.total-x.completed), progress=pct(x.completed,x.total);
+  const div=document.createElement("div");div.className="card";
+  div.innerHTML=`<div class="prayer-top"><div class="prayer-name"><span class="prayer-emoji">${p.emoji}</span><div><h4>${p.name}</h4><small>${rem===0&&x.total>0?"Completed ✓":"Tap to record"}</small></div></div><div class="percent">${progress.toFixed(progress<10&&progress>0?2:progress%1?1:0)}%</div></div>
+  <div class="bar"><div style="width:${progress}%"></div></div>
+  <div class="numbers"><div class="num"><span>Total</span><b>${fmt(x.total)}</b></div><div class="num"><span>Completed</span><b>${fmt(x.completed)}</b></div><div class="num"><span>Remaining</span><b>${fmt(rem)}</b></div></div>
+  <div class="actions"><button class="btn primary" onclick="add('${p.id}',1)">+1</button><button class="btn primary" onclick="add('${p.id}',5)">+5</button><button class="btn primary" onclick="add('${p.id}',10)">+10</button></div>
+  <div class="actions"><button class="btn" onclick="add('${p.id}',20)">+20</button><button class="btn" onclick="customAdd('${p.id}')">Custom</button><button class="btn" onclick="undoLast('${p.id}')">Undo</button></div>`;
+  grid.appendChild(div);
+ });
+}
+function customAdd(id){const n=prompt("How many did you complete?","10");if(n!==null)add(id,n)}
+function undoLast(id){
+ const k=todayKey(), h=data.history[k]?.[id]||0;
+ if(!h){showToast("Nothing to undo today.");return}
+ const actual=1; data.prayers[id].completed=Math.max(0,data.prayers[id].completed-actual);
+ data.history[k][id]=h-actual;if(data.history[k][id]<=0)delete data.history[k][id];
+ save();render();showToast("Last 1 recorded prayer undone");
+}
+function renderToday(){
+ const k=todayKey(), h=data.history[k]||{}, total=Object.values(h).reduce((a,b)=>a+b,0);
+ document.getElementById("todayTotal").textContent=fmt(total);
+ document.getElementById("todayDate").textContent=new Date().toLocaleDateString(undefined,{month:"short",day:"numeric"});
+ const b=document.getElementById("todayBreakdown");b.innerHTML="";
+ const entries=PRAYERS.filter(p=>h[p.id]>0);
+ if(!entries.length){b.innerHTML='<span class="chip">No entries yet</span>';return}
+ entries.forEach(p=>{const s=document.createElement("span");s.className="chip";s.textContent=`${p.name} × ${fmt(h[p.id])}`;b.appendChild(s)})
+}
+function dayEntriesBetween(start,end){
+ let sum=0; for(const [k,h] of Object.entries(data.history)){const d=new Date(k+"T00:00:00");if(d>=start&&d<=end)sum+=Object.values(h).reduce((a,b)=>a+b,0)} return sum
+}
+function renderStats(){
+ const t=totals(), now=new Date(); const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+ const weekStart=new Date(today);weekStart.setDate(today.getDate()-6);
+ const monthStart=new Date(now.getFullYear(),now.getMonth(),1);
+ document.getElementById("sCompleted").textContent=fmt(t.completed);document.getElementById("sRemaining").textContent=fmt(t.remaining);
+ document.getElementById("sPct").textContent=pct(t.completed,t.total).toFixed(2)+"%";
+ const td=Object.values(data.history[todayKey()]||{}).reduce((a,b)=>a+b,0);
+ document.getElementById("sToday").textContent=fmt(td);document.getElementById("sWeek").textContent=fmt(dayEntriesBetween(weekStart,now));
+ document.getElementById("sMonth").textContent=fmt(dayEntriesBetween(monthStart,now));
+ const days=Object.keys(data.history).length;document.getElementById("sAvg").textContent=fmt(days?Math.round(t.completed/days):0);
+ const box=document.getElementById("statsPrayers");box.innerHTML="";
+ PRAYERS.forEach(p=>{const x=data.prayers[p.id],pr=pct(x.completed,x.total);const row=document.createElement("div");row.style.marginBottom="15px";row.innerHTML=`<div style="display:flex;justify-content:space-between;font-size:13px"><b>${p.emoji} ${p.name}</b><span>${fmt(x.completed)} / ${fmt(x.total)} · ${pr.toFixed(1)}%</span></div><div class="bar" style="margin:7px 0 0"><div style="width:${pr}%"></div></div>`;box.appendChild(row)})
+}
+function renderHistory(){
+ const box=document.getElementById("historyList"), keys=Object.keys(data.history).sort().reverse();box.innerHTML="";
+ if(!keys.length){box.innerHTML='<div class="empty">No qaza history yet.</div>';return}
+ keys.forEach(k=>{const h=data.history[k],total=Object.values(h).reduce((a,b)=>a+b,0);const detail=PRAYERS.filter(p=>h[p.id]).map(p=>`${p.name} × ${h[p.id]}`).join(" · ");const row=document.createElement("div");row.className="history-item";row.innerHTML=`<div><div class="history-date">${new Date(k+"T00:00:00").toLocaleDateString(undefined,{year:"numeric",month:"long",day:"numeric"})}</div><div class="history-detail">${detail}</div></div><b>${fmt(total)}</b>`;box.appendChild(row)})
+}
+function openSetup(){
+ const fields=document.getElementById("setupFields");fields.innerHTML="";
+ PRAYERS.forEach(p=>{const x=data.prayers[p.id],wrap=document.createElement("div");wrap.className="field";wrap.innerHTML=`<label>${p.emoji} ${p.name} — total qaza</label><input id="in_${p.id}" type="number" min="0" step="1" value="${x.total}">`;fields.appendChild(wrap)});
+ document.getElementById("modal").classList.add("show")
+}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+function saveSetup(){
+ PRAYERS.forEach(p=>{const input=document.getElementById("in_"+p.id);let total=Math.max(0,Math.floor(Number(input.value)||0));const old=data.prayers[p.id].completed;data.prayers[p.id].total=Math.max(total,old)});
+ data.onboarding=true;save();closeModal();render();showToast("Qaza counts saved")
+}
+function resetTracker(){if(!confirm("Reset the tracker? Current counts and history will be erased."))return;data=fresh();save();openSetup();render();showToast("Tracker reset")}
+function exportData(){
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="qaza-namaz-backup.json";a.click();URL.revokeObjectURL(a.href);showToast("Backup exported")
+}
+document.getElementById("restoreInput").addEventListener("change",e=>{
+ const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.prayers||!x.history)throw 0;if(confirm("Replace current tracker with this backup?")){data=Object.assign(fresh(),x);save();render();showToast("Backup restored")}}catch{alert("Invalid backup file.")}e.target.value=""};r.readAsText(file)
+});
+function scrollToPrayers(){document.getElementById("prayerGrid").scrollIntoView({behavior:"smooth"})}
+document.querySelectorAll(".nav button").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.getElementById(btn.dataset.view).classList.add("active");window.scrollTo({top:0,behavior:"smooth"})}));
+document.getElementById("themeBtn").addEventListener("click",()=>{data.theme=data.theme==="dark"?"light":"dark";document.body.classList.toggle("dark",data.theme==="dark");document.getElementById("themeBtn").textContent=data.theme==="dark"?"☀️":"🌙";save()});
+function initTheme(){document.body.classList.toggle("dark",data.theme==="dark");document.getElementById("themeBtn").textContent=data.theme==="dark"?"☀️":"🌙"}
+initTheme();render();if(!data.onboarding)setTimeout(openSetup,250);
+</script>
+</body>
+</html>
