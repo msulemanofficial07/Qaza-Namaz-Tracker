@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<meta name="description" content="A private, mobile-friendly Qaza Namaz Tracker for tracking estimated missed prayers and viewing local prayer times.">
+<meta name="description" content="A private, mobile-friendly Qaza Namaz Tracker for tracking estimated missed prayers.">
 <title>Qaza Namaz Tracker</title>
 <style>
 :root{
@@ -13,7 +13,7 @@
 }
 *{box-sizing:border-box} html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input,select{font:inherit} button{cursor:pointer}
+button,input{font:inherit} button{cursor:pointer}
 .app{max-width:1080px;margin:auto;padding:16px 16px 92px}
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0 18px}
 .brand{display:flex;align-items:center;gap:10px}.brand-icon{width:44px;height:44px;border-radius:14px;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:22px;box-shadow:var(--shadow)}
@@ -40,16 +40,14 @@ button,input,select{font:inherit} button{cursor:pointer}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:var(--shadow)}
 .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.mini{background:#f7faf9;border-radius:14px;padding:13px}.mini b{font-size:20px;display:block}.mini span{font-size:11px;color:var(--muted)}
 .history-item{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.history-item:last-child{border-bottom:0}.history-date{font-weight:700}.history-detail{color:var(--muted);font-size:12px;margin-top:3px}
-.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);z-index:20}.nav-inner{max-width:600px;margin:auto;display:grid;grid-template-columns:repeat(6,1fr);padding:7px 8px env(safe-area-inset-bottom)}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);z-index:20}.nav-inner{max-width:600px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);padding:7px 8px env(safe-area-inset-bottom)}
 .nav button{border:0;background:transparent;color:var(--muted);padding:7px 3px;border-radius:12px;font-size:11px}.nav button.active{color:var(--primary);font-weight:800;background:var(--soft)}.nav-icon{display:block;font-size:18px;margin-bottom:2px}
 .view{display:none}.view.active{display:block}
-.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:none;align-items:flex-end;justify-content:center;padding:12px}.modal-backdrop.show{display:flex}.modal{background:var(--card);width:min(560px,100%);border-radius:22px;padding:19px;max-height:90vh;overflow:auto}.modal h3{margin:0 0 5px}.modal p{color:var(--muted);font-size:13px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}.field input,.field select{width:100%;padding:11px;border:1px solid var(--line);border-radius:11px;outline:none}.modal-actions{display:flex;gap:8px;margin-top:16px}.modal-actions .btn{flex:1}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:none;align-items:flex-end;justify-content:center;padding:12px}.modal-backdrop.show{display:flex}.modal{background:var(--card);width:min(560px,100%);border-radius:22px;padding:19px;max-height:90vh;overflow:auto}.modal h3{margin:0 0 5px}.modal p{color:var(--muted);font-size:13px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}.field input{width:100%;padding:11px;border:1px solid var(--line);border-radius:11px;outline:none}.modal-actions{display:flex;gap:8px;margin-top:16px}.modal-actions .btn{flex:1}
 .notice{font-size:11px;line-height:1.5;color:var(--muted);padding:12px 2px;text-align:center}.empty{text-align:center;padding:20px;color:var(--muted)}
 .toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%) translateY(15px);background:#172321;color:#fff;padding:10px 14px;border-radius:999px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:80;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 body.dark{--bg:#0d1715;--card:#14211e;--text:#edf6f3;--muted:#9eb1ac;--line:#263a35;--soft:#173a35;--shadow:0 10px 30px rgba(0,0,0,.25)} body.dark .btn{background:#182824;color:var(--text)} body.dark .btn.primary{background:var(--primary);color:#fff} body.dark .num,body.dark .mini{background:#192a26} body.dark .nav{background:rgba(20,33,30,.94)}
-@media(max-width:680px){
-  .app{padding:12px 12px 90px}.summary{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.hero{border-radius:20px}.hero h2{font-size:22px}.form-grid{grid-template-columns:1fr 1fr}.stat-grid{grid-template-columns:1fr 1fr}.stat-grid .mini:last-child{grid-column:1/-1}.nav-inner{grid-template-columns:repeat(3,1fr)}
-}
+@media(max-width:680px){.app{padding:12px 12px 90px}.summary{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.hero{border-radius:20px}.hero h2{font-size:22px}.form-grid{grid-template-columns:1fr 1fr}.stat-grid{grid-template-columns:1fr 1fr}.stat-grid .mini:last-child{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -105,75 +103,6 @@ body.dark{--bg:#0d1715;--card:#14211e;--text:#edf6f3;--muted:#9eb1ac;--line:#263
   <div class="panel" id="historyList"></div>
 </section>
 
-<section id="times" class="view">
-  <div class="section-head"><h3>🗺️ Prayer Times</h3></div>
-  <div class="panel">
-    <div class="form-grid" style="margin-bottom:12px">
-      <div class="field">
-        <label for="citySelect">City</label>
-        <select id="citySelect" style="width:100%;padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--text)"></select>
-      </div>
-      <div class="field">
-        <label for="methodSelect">Calculation</label>
-        <select id="methodSelect" style="width:100%;padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--text)">
-          <option value="karachi">Karachi</option>
-          <option value="mwl">MWL</option>
-          <option value="isna">ISNA</option>
-          <option value="egypt">Egypt</option>
-          <option value="makkah">Makkah</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="asrMethodSelect">Asr method</label>
-        <select id="asrMethodSelect" style="width:100%;padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--text)">
-          <option value="standard">Standard</option>
-          <option value="hanafi">Hanafi</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="timezoneSelect">Timezone</label>
-        <select id="timezoneSelect" style="width:100%;padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--text)">
-          <option value="5">UTC+5 (Pakistan)</option>
-          <option value="0">UTC+0</option>
-          <option value="1">UTC+1</option>
-          <option value="2">UTC+2</option>
-          <option value="3">UTC+3</option>
-          <option value="4">UTC+4</option>
-          <option value="5.5">UTC+5:30</option>
-          <option value="6">UTC+6</option>
-          <option value="8">UTC+8</option>
-          <option value="-5">UTC-5</option>
-          <option value="-8">UTC-8</option>
-        </select>
-      </div>
-    </div>
-    <div class="custom-row" style="margin-top:0">
-      <button class="btn primary" id="useLocationBtn" style="flex:1">Use device location</button>
-      <button class="btn" id="refreshTimesBtn" style="flex:1">Refresh</button>
-    </div>
-    <div class="notice" id="locationSummary">City: Karachi, Pakistan</div>
-  </div>
-
-  <div class="section">
-    <div class="section-head"><h3>Today's Schedule</h3><span class="muted" id="todayPrayerDate"></span></div>
-    <div id="todayPrayerTimes" class="grid"></div>
-  </div>
-</section>
-
-<section id="calendar" class="view">
-  <div class="section-head">
-    <h3>📆 Annual Timetable</h3>
-    <div style="display:flex;gap:6px;align-items:center">
-      <button class="btn" id="prevMonthBtn" type="button">←</button>
-      <span class="muted" id="calendarMonthLabel">Month</span>
-      <button class="btn" id="nextMonthBtn" type="button">→</button>
-    </div>
-  </div>
-  <div class="panel">
-    <div id="scheduleCalendar" class="calendar-grid" style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px"></div>
-  </div>
-</section>
-
 <section id="settings" class="view">
   <div class="section-head"><h3>⚙️ Settings</h3></div>
   <div class="panel">
@@ -185,8 +114,8 @@ body.dark{--bg:#0d1715;--card:#14211e;--text:#edf6f3;--muted:#9eb1ac;--line:#263
   </div>
   <div class="section panel">
     <h3 style="margin-top:0">About</h3>
-    <p class="muted">Your basic tracker data is stored locally in this browser. Prayer times are calculated from your selected city and chosen method for planning assistance only.</p>
-    <p class="notice">For Islamic rulings about missed prayers, calculation, or fiqh differences between schools, consult a qualified scholar.</p>
+    <p class="muted">Your basic tracker data is stored locally in this browser. No account is required for this demo.</p>
+    <p class="notice">For Islamic rulings about missed prayers, calculation, or school-specific fiqh, consult a qualified scholar.</p>
     <div class="panel" style="margin-top:12px;background:var(--soft);box-shadow:none">
       <h4 style="margin:0 0 8px">Developer Contact</h4>
       <p style="margin:4px 0"><b>M Suleman : Web Designer.</b></p>
@@ -202,8 +131,6 @@ body.dark{--bg:#0d1715;--card:#14211e;--text:#edf6f3;--muted:#9eb1ac;--line:#263
   <button class="active" data-view="home"><span class="nav-icon">🏠</span>Home</button>
   <button data-view="stats"><span class="nav-icon">📊</span>Stats</button>
   <button data-view="history"><span class="nav-icon">📅</span>History</button>
-  <button data-view="times"><span class="nav-icon">🕋</span>Times</button>
-  <button data-view="calendar"><span class="nav-icon">📆</span>Calendar</button>
   <button data-view="settings"><span class="nav-icon">⚙️</span>Settings</button>
 </div></nav>
 
@@ -218,502 +145,137 @@ body.dark{--bg:#0d1715;--card:#14211e;--text:#edf6f3;--muted:#9eb1ac;--line:#263
 
 <script>
 const PRAYERS=[
-  {id:"fajr",name:"Fajr",emoji:"🌅"},
-  {id:"dhuhr",name:"Dhuhr",emoji:"☀️"},
-  {id:"asr",name:"Asr",emoji:"🌇"},
-  {id:"maghrib",name:"Maghrib",emoji:"🌆"},
-  {id:"isha",name:"Isha",emoji:"🌙"},
-  {id:"witr",name:"Witr",emoji:"⭐"}
+ {id:"fajr",name:"Fajr",emoji:"🌅"},{id:"dhuhr",name:"Dhuhr",emoji:"☀️"},
+ {id:"asr",name:"Asr",emoji:"🌇"},{id:"maghrib",name:"Maghrib",emoji:"🌆"},
+ {id:"isha",name:"Isha",emoji:"🌙"},{id:"witr",name:"Witr",emoji:"⭐"}
 ];
-
-const CITY_OPTIONS=[
-  {id:"karachi", label:"Karachi, Pakistan", latitude:24.8607, longitude:67.0011, timezone:5},
-  {id:"lahore", label:"Lahore, Pakistan", latitude:31.5204, longitude:74.3587, timezone:5},
-  {id:"islamabad", label:"Islamabad, Pakistan", latitude:33.6844, longitude:73.0479, timezone:5},
-  {id:"multan", label:"Multan, Pakistan", latitude:30.1575, longitude:71.5249, timezone:5},
-  {id:"peshawar", label:"Peshawar, Pakistan", latitude:34.0151, longitude:71.5249, timezone:5},
-  {id:"dubai", label:"Dubai, UAE", latitude:25.2048, longitude:55.2708, timezone:4},
-  {id:"riyadh", label:"Riyadh, Saudi Arabia", latitude:24.7136, longitude:46.6753, timezone:3},
-  {id:"london", label:"London, UK", latitude:51.5072, longitude:-0.1276, timezone:0},
-  {id:"new_york", label:"New York, USA", latitude:40.7128, longitude:-74.006, timezone:-5},
-  {id:"toronto", label:"Toronto, Canada", latitude:43.6532, longitude:-79.3832, timezone:-5}
-];
-
-const METHOD_CONFIG={
-  karachi:{label:"Karachi", fajr:18, isha:18, maghrib:0, asr:"standard"},
-  mwl:{label:"MWL", fajr:18, isha:17, maghrib:0, asr:"standard"},
-  isna:{label:"ISNA", fajr:15, isha:15, maghrib:0, asr:"standard"},
-  egypt:{label:"Egypt", fajr:19.5, isha:17.5, maghrib:0, asr:"standard"},
-  makkah:{label:"Makkah", fajr:18.5, isha:90, maghrib:0, asr:"hanafi"}
-};
-
 const KEY="qaza_tracker_v1";
-const DEFAULT_SETTINGS={cityId:"karachi", method:"karachi", asrMethod:"standard", timezone:5, latitude:24.8607, longitude:67.0011, useDeviceLocation:false};
 let data=load();
-let calendarMonth = new Date().getMonth();
-let calendarYear = new Date().getFullYear();
-
-function fresh(){
-  return {
-    version:1,
-    onboarding:false,
-    theme:"light",
-    prayers:Object.fromEntries(PRAYERS.map(p=>[p.id,{total:0,completed:0}])),
-    history:{},
-    settings:{...DEFAULT_SETTINGS}
-  };
-}
-
+function fresh(){return {version:1,onboarding:false,theme:"light",prayers:Object.fromEntries(PRAYERS.map(p=>[p.id,{total:0,completed:0}])),history:{}}}
 function normalize(raw){
-  const base=fresh(), source=raw&&typeof raw==="object"?raw:{};
-  base.onboarding=source.onboarding===true;
-  base.theme=source.theme==="dark"?"dark":"light";
-
-  PRAYERS.forEach(p=>{
-    const saved=source.prayers&&source.prayers[p.id]||{};
-    const completed=Math.max(0,Math.floor(Number(saved.completed)||0));
-    base.prayers[p.id]={total:Math.max(completed,Math.floor(Number(saved.total)||0)),completed};
+ const base=fresh(), source=raw&&typeof raw==="object"?raw:{};
+ base.onboarding=source.onboarding===true;
+ base.theme=source.theme==="dark"?"dark":"light";
+ PRAYERS.forEach(p=>{
+  const saved=source.prayers&&source.prayers[p.id]||{};
+  const completed=Math.max(0,Math.floor(Number(saved.completed)||0));
+  base.prayers[p.id]={total:Math.max(completed,Math.floor(Number(saved.total)||0)),completed};
+ });
+ if(source.history&&typeof source.history==="object"){
+  Object.entries(source.history).forEach(([date,entries])=>{
+   if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!entries||typeof entries!=="object")return;
+   const valid={};
+   PRAYERS.forEach(p=>{const count=Math.max(0,Math.floor(Number(entries[p.id])||0));if(count)valid[p.id]=count});
+   if(Object.keys(valid).length)base.history[date]=valid;
   });
-
-  if(source.history&&typeof source.history==="object"){
-    Object.entries(source.history).forEach(([date,entries])=>{
-      if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!entries||typeof entries!=="object")return;
-      const valid={};
-      PRAYERS.forEach(p=>{const count=Math.max(0,Math.floor(Number(entries[p.id])||0));if(count)valid[p.id]=count});
-      if(Object.keys(valid).length)base.history[date]=valid;
-    });
-  }
-
-  if(source.settings&&typeof source.settings==="object"){
-    const settings=source.settings;
-    base.settings={
-      ...DEFAULT_SETTINGS,
-      ...settings,
-      timezone:Number(settings.timezone ?? DEFAULT_SETTINGS.timezone),
-      latitude:Number(settings.latitude ?? DEFAULT_SETTINGS.latitude),
-      longitude:Number(settings.longitude ?? DEFAULT_SETTINGS.longitude)
-    };
-  }
-
-  return base;
+ }
+ return base;
 }
-
-function load(){
-  try{return normalize(JSON.parse(localStorage.getItem(KEY)||"null"))}catch{return fresh()}
-}
-
+function load(){try{return normalize(JSON.parse(localStorage.getItem(KEY)||"null"))}catch{return fresh()}}
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function fmt(n){return new Intl.NumberFormat().format(n)}
 function pct(done,total){return total>0?Math.min(100,(done/total)*100):0}
 function todayKey(d=new Date()){return d.toISOString().slice(0,10)}
-
-function showToast(msg){
-  const t=document.getElementById("toast");
-  t.textContent=msg;
-  t.classList.add("show");
-  clearTimeout(showToast.t);
-  showToast.t=setTimeout(()=>t.classList.remove("show"),1800);
-}
-
+function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(()=>t.classList.remove("show"),1800)}
 function totals(){
-  let total=0,completed=0;
-  PRAYERS.forEach(p=>{total+=Number(data.prayers[p.id].total)||0;completed+=Number(data.prayers[p.id].completed)||0});
-  return {total,completed,remaining:Math.max(0,total-completed)};
+ let total=0,completed=0;
+ PRAYERS.forEach(p=>{total+=Number(data.prayers[p.id].total)||0;completed+=Number(data.prayers[p.id].completed)||0});
+ return {total,completed,remaining:Math.max(0,total-completed)};
 }
-
 function add(id,amount){
-  amount=Math.floor(Number(amount)||0); if(amount<=0)return;
-  const p=data.prayers[id], rem=Math.max(0,p.total-p.completed), actual=Math.min(amount,rem);
-  if(actual<=0){showToast("This prayer is already complete.");return}
-  p.completed+=actual;
-  const k=todayKey();
-  if(!data.history[k])data.history[k]={};
-  data.history[k][id]=(data.history[k][id]||0)+actual;
-  save(); render(); showToast(`+${actual} ${PRAYERS.find(x=>x.id===id).name} recorded`);
+ amount=Math.floor(Number(amount)||0); if(amount<=0)return;
+ const p=data.prayers[id], rem=Math.max(0,p.total-p.completed), actual=Math.min(amount,rem);
+ if(actual<=0){showToast("This prayer is already complete.");return}
+ p.completed+=actual;
+ const k=todayKey();
+ if(!data.history[k])data.history[k]={};
+ data.history[k][id]=(data.history[k][id]||0)+actual;
+ save(); render(); showToast(`+${actual} ${PRAYERS.find(x=>x.id===id).name} recorded`);
 }
-
-function undoLast(id){
-  const k=todayKey(); const h=data.history[k]||{};
-  const amount=h[id]||0;
-  if(!amount){showToast("Nothing to undo today.");return}
-  const actual=1;
-  data.prayers[id].completed=Math.max(0,data.prayers[id].completed-actual);
-  data.history[k][id]=Math.max(0,h[id]-actual);
-  if(data.history[k][id]<=0)delete data.history[k][id];
-  save(); render(); showToast("Last 1 recorded prayer undone");
-}
-
 function render(){
-  const t=totals(), progress=pct(t.completed,t.total);
-  ["total","completed","remaining"].forEach(id=>document.getElementById(id).textContent=fmt(t[id]));
-  document.getElementById("overallPct").textContent=progress.toFixed(progress<10&&progress>0?2:progress%1?1:0)+"%";
-  document.getElementById("overallBar").style.width=progress+"%";
-  document.getElementById("overallText").textContent=fmt(t.completed)+" completed";
-  document.getElementById("overallText2").textContent=fmt(t.remaining)+" remaining";
-  renderPrayers(); renderToday(); renderStats(); renderHistory(); renderTimes(); renderCalendar();
+ const t=totals(), progress=pct(t.completed,t.total);
+ ["total","completed","remaining"].forEach(id=>document.getElementById(id).textContent=fmt(t[id]));
+ document.getElementById("overallPct").textContent=progress.toFixed(progress<10&&progress>0?2:progress%1?1:0)+"%";
+ document.getElementById("overallBar").style.width=progress+"%";
+ document.getElementById("overallText").textContent=fmt(t.completed)+" completed";
+ document.getElementById("overallText2").textContent=fmt(t.remaining)+" remaining";
+ renderPrayers(); renderToday(); renderStats(); renderHistory();
 }
-
 function renderPrayers(){
-  const grid=document.getElementById("prayerGrid");grid.innerHTML="";
-  PRAYERS.forEach(p=>{
-    const x=data.prayers[p.id], pr=pct(x.completed,x.total);
-    const card=document.createElement("div");
-    card.className="card";
-    card.innerHTML=`
-      <div class="prayer-top">
-        <div class="prayer-name"><div class="prayer-emoji">${p.emoji}</div><div><h4>${p.name}</h4><small>${fmt(x.total)} total</small></div></div>
-        <div class="percent">${pr.toFixed(pr<10&&pr>0?2:pr%1?1:0)}%</div>
-      </div>
-      <div class="bar"><div style="width:${pr}%"></div></div>
-      <div class="numbers">
-        <div class="num"><span>Total</span><b>${fmt(x.total)}</b></div>
-        <div class="num"><span>Done</span><b>${fmt(x.completed)}</b></div>
-        <div class="num"><span>Left</span><b>${fmt(Math.max(0,x.total-x.completed))}</b></div>
-      </div>
-      <div class="actions">
-        <button class="btn primary" onclick="add('${p.id}',1)">+1</button>
-        <button class="btn" onclick="add('${p.id}',2)">+2</button>
-        <button class="btn" onclick="undoLast('${p.id}')">Undo</button>
-      </div>
-      <div class="custom-row">
-        <input id="custom_${p.id}" type="number" min="0" step="1" placeholder="Custom">
-        <button class="btn primary" onclick="add('${p.id}',document.getElementById('custom_${p.id}').value)">Add</button>
-      </div>
-      <div class="completed">${fmt(x.completed)} completed</div>
-    `;
-    grid.appendChild(card);
-  });
+ const grid=document.getElementById("prayerGrid");grid.innerHTML="";
+ PRAYERS.forEach(p=>{
+  const x=data.prayers[p.id], rem=Math.max(0,x.total-x.completed), progress=pct(x.completed,x.total);
+  const div=document.createElement("div");div.className="card";
+  div.innerHTML=`<div class="prayer-top"><div class="prayer-name"><span class="prayer-emoji">${p.emoji}</span><div><h4>${p.name}</h4><small>${rem===0&&x.total>0?"Completed ✓":"Tap to record"}</small></div></div><div class="percent">${progress.toFixed(progress<10&&progress>0?2:progress%1?1:0)}%</div></div>
+  <div class="bar"><div style="width:${progress}%"></div></div>
+  <div class="numbers"><div class="num"><span>Total</span><b>${fmt(x.total)}</b></div><div class="num"><span>Completed</span><b>${fmt(x.completed)}</b></div><div class="num"><span>Remaining</span><b>${fmt(rem)}</b></div></div>
+  <div class="actions"><button class="btn primary" onclick="add('${p.id}',1)">+1</button><button class="btn primary" onclick="add('${p.id}',5)">+5</button><button class="btn primary" onclick="add('${p.id}',10)">+10</button></div>
+  <div class="actions"><button class="btn" onclick="add('${p.id}',20)">+20</button><button class="btn" onclick="customAdd('${p.id}')">Custom</button><button class="btn" onclick="undoLast('${p.id}')">Undo</button></div>`;
+  grid.appendChild(div);
+ });
 }
-
+function customAdd(id){const n=prompt("How many did you complete?","10");if(n!==null)add(id,n)}
+function undoLast(id){
+ const k=todayKey(), h=data.history[k]?.[id]||0;
+ if(!h){showToast("Nothing to undo today.");return}
+ const actual=1; data.prayers[id].completed=Math.max(0,data.prayers[id].completed-actual);
+ data.history[k][id]=h-actual;if(data.history[k][id]<=0)delete data.history[k][id];
+ save();render();showToast("Last 1 recorded prayer undone");
+}
 function renderToday(){
-  const k=todayKey(), h=data.history[k]||{}, total=Object.values(h).reduce((a,b)=>a+b,0);
-  document.getElementById("todayTotal").textContent=fmt(total);
-  document.getElementById("todayDate").textContent=new Date().toLocaleDateString(undefined,{month:"short",day:"numeric"});
-  const b=document.getElementById("todayBreakdown"); b.innerHTML="";
-  const entries=PRAYERS.filter(p=>h[p.id]>0);
-  if(!entries.length){b.innerHTML='<span class="chip">No entries yet</span>';return}
-  entries.forEach(p=>{const s=document.createElement("span"); s.className="chip"; s.textContent=`${p.name} × ${fmt(h[p.id])}`; b.appendChild(s);});
+ const k=todayKey(), h=data.history[k]||{}, total=Object.values(h).reduce((a,b)=>a+b,0);
+ document.getElementById("todayTotal").textContent=fmt(total);
+ document.getElementById("todayDate").textContent=new Date().toLocaleDateString(undefined,{month:"short",day:"numeric"});
+ const b=document.getElementById("todayBreakdown");b.innerHTML="";
+ const entries=PRAYERS.filter(p=>h[p.id]>0);
+ if(!entries.length){b.innerHTML='<span class="chip">No entries yet</span>';return}
+ entries.forEach(p=>{const s=document.createElement("span");s.className="chip";s.textContent=`${p.name} × ${fmt(h[p.id])}`;b.appendChild(s)})
 }
-
 function dayEntriesBetween(start,end){
-  let sum=0;
-  for(const [k,h] of Object.entries(data.history)){
-    const d=new Date(k+"T00:00:00");
-    if(d>=start&&d<=end)sum+=Object.values(h).reduce((a,b)=>a+b,0);
-  }
-  return sum;
+ let sum=0; for(const [k,h] of Object.entries(data.history)){const d=new Date(k+"T00:00:00");if(d>=start&&d<=end)sum+=Object.values(h).reduce((a,b)=>a+b,0)} return sum
 }
-
 function renderStats(){
-  const t=totals(), now=new Date();
-  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-  const weekStart=new Date(today); weekStart.setDate(today.getDate()-6);
-  const monthStart=new Date(now.getFullYear(),now.getMonth(),1);
-  document.getElementById("sCompleted").textContent=fmt(t.completed);
-  document.getElementById("sRemaining").textContent=fmt(t.remaining);
-  document.getElementById("sPct").textContent=pct(t.completed,t.total).toFixed(2)+"%";
-  const td=Object.values(data.history[todayKey()]||{}).reduce((a,b)=>a+b,0);
-  document.getElementById("sToday").textContent=fmt(td);
-  document.getElementById("sWeek").textContent=fmt(dayEntriesBetween(weekStart,now));
-  document.getElementById("sMonth").textContent=fmt(dayEntriesBetween(monthStart,now));
-  const days=Object.keys(data.history).length;
-  document.getElementById("sAvg").textContent=fmt(days?Math.round(t.completed/days):0);
-
-  const box=document.getElementById("statsPrayers"); box.innerHTML="";
-  PRAYERS.forEach(p=>{
-    const x=data.prayers[p.id], pr=pct(x.completed,x.total);
-    const row=document.createElement("div"); row.style.marginBottom="15px";
-    row.innerHTML=`<div style="display:flex;justify-content:space-between;font-size:13px"><b>${p.emoji} ${p.name}</b><span>${fmt(x.completed)} / ${fmt(x.total)} · ${pr.toFixed(1)}%</span></div><div class="bar" style="margin:7px 0 0"><div style="width:${pr}%"></div></div>`;
-    box.appendChild(row);
-  });
+ const t=totals(), now=new Date(); const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+ const weekStart=new Date(today);weekStart.setDate(today.getDate()-6);
+ const monthStart=new Date(now.getFullYear(),now.getMonth(),1);
+ document.getElementById("sCompleted").textContent=fmt(t.completed);document.getElementById("sRemaining").textContent=fmt(t.remaining);
+ document.getElementById("sPct").textContent=pct(t.completed,t.total).toFixed(2)+"%";
+ const td=Object.values(data.history[todayKey()]||{}).reduce((a,b)=>a+b,0);
+ document.getElementById("sToday").textContent=fmt(td);document.getElementById("sWeek").textContent=fmt(dayEntriesBetween(weekStart,now));
+ document.getElementById("sMonth").textContent=fmt(dayEntriesBetween(monthStart,now));
+ const days=Object.keys(data.history).length;document.getElementById("sAvg").textContent=fmt(days?Math.round(t.completed/days):0);
+ const box=document.getElementById("statsPrayers");box.innerHTML="";
+ PRAYERS.forEach(p=>{const x=data.prayers[p.id],pr=pct(x.completed,x.total);const row=document.createElement("div");row.style.marginBottom="15px";row.innerHTML=`<div style="display:flex;justify-content:space-between;font-size:13px"><b>${p.emoji} ${p.name}</b><span>${fmt(x.completed)} / ${fmt(x.total)} · ${pr.toFixed(1)}%</span></div><div class="bar" style="margin:7px 0 0"><div style="width:${pr}%"></div></div>`;box.appendChild(row)})
 }
-
 function renderHistory(){
-  const box=document.getElementById("historyList"), keys=Object.keys(data.history).sort().reverse();
-  box.innerHTML="";
-  if(!keys.length){box.innerHTML='<div class="empty">No qaza history yet.</div>';return;}
-  keys.forEach(k=>{
-    const h=data.history[k], total=Object.values(h).reduce((a,b)=>a+b,0);
-    const detail=PRAYERS.filter(p=>h[p.id]).map(p=>`${p.name} × ${h[p.id]}`).join(" · ");
-    const row=document.createElement("div"); row.className="history-item";
-    row.innerHTML=`<div><div class="history-date">${new Date(k+"T00:00:00").toLocaleDateString(undefined,{year:"numeric",month:"long",day:"numeric"})}</div><div class="history-detail">${detail}</div></div><b>${fmt(total)}</b>`;
-    box.appendChild(row);
-  });
+ const box=document.getElementById("historyList"), keys=Object.keys(data.history).sort().reverse();box.innerHTML="";
+ if(!keys.length){box.innerHTML='<div class="empty">No qaza history yet.</div>';return}
+ keys.forEach(k=>{const h=data.history[k],total=Object.values(h).reduce((a,b)=>a+b,0);const detail=PRAYERS.filter(p=>h[p.id]).map(p=>`${p.name} × ${h[p.id]}`).join(" · ");const row=document.createElement("div");row.className="history-item";row.innerHTML=`<div><div class="history-date">${new Date(k+"T00:00:00").toLocaleDateString(undefined,{year:"numeric",month:"long",day:"numeric"})}</div><div class="history-detail">${detail}</div></div><b>${fmt(total)}</b>`;box.appendChild(row)})
 }
-
 function openSetup(){
-  const fields=document.getElementById("setupFields");
-  fields.innerHTML="";
-  PRAYERS.forEach(p=>{const x=data.prayers[p.id], wrap=document.createElement("div"); wrap.className="field"; wrap.innerHTML=`<label>${p.emoji} ${p.name} — total qaza</label><input id="in_${p.id}" type="number" min="0" step="1" value="${x.total}">`; fields.appendChild(wrap);});
-  document.getElementById("modal").classList.add("show");
+ const fields=document.getElementById("setupFields");fields.innerHTML="";
+ PRAYERS.forEach(p=>{const x=data.prayers[p.id],wrap=document.createElement("div");wrap.className="field";wrap.innerHTML=`<label>${p.emoji} ${p.name} — total qaza</label><input id="in_${p.id}" type="number" min="0" step="1" value="${x.total}">`;fields.appendChild(wrap)});
+ document.getElementById("modal").classList.add("show")
 }
-
 function closeModal(){document.getElementById("modal").classList.remove("show")}
-
 function saveSetup(){
-  PRAYERS.forEach(p=>{
-    const input=document.getElementById("in_"+p.id);
-    let total=Math.max(0,Math.floor(Number(input.value)||0));
-    const old=data.prayers[p.id].completed;
-    data.prayers[p.id].total=Math.max(total,old);
-  });
-  data.onboarding=true; save(); closeModal(); render(); showToast("Qaza counts saved");
+ PRAYERS.forEach(p=>{const input=document.getElementById("in_"+p.id);let total=Math.max(0,Math.floor(Number(input.value)||0));const old=data.prayers[p.id].completed;data.prayers[p.id].total=Math.max(total,old)});
+ data.onboarding=true;save();closeModal();render();showToast("Qaza counts saved")
 }
-
-function resetTracker(){
-  if(!confirm("Reset the tracker? Current counts and history will be erased."))return;
-  data=fresh(); save(); openSetup(); render(); showToast("Tracker reset");
-}
-
+function resetTracker(){if(!confirm("Reset the tracker? Current counts and history will be erased."))return;data=fresh();save();openSetup();render();showToast("Tracker reset")}
 function exportData(){
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}), a=document.createElement("a");
-  a.href=URL.createObjectURL(blob); a.download="qaza-namaz-backup.json"; a.click(); URL.revokeObjectURL(a.href); showToast("Backup exported");
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="qaza-namaz-backup.json";a.click();URL.revokeObjectURL(a.href);showToast("Backup exported")
 }
-
 document.getElementById("restoreInput").addEventListener("change",e=>{
-  const file=e.target.files[0];
-  if(!file)return;
-  const r=new FileReader();
-  r.onload=()=>{
-    try{
-      const x=JSON.parse(r.result);
-      if(!x.prayers||!x.history)throw 0;
-      if(confirm("Replace current tracker with this backup?")){data=normalize(x); save(); render(); showToast("Backup restored");}
-    }catch{alert("Invalid backup file.");}
-    e.target.value="";
-  };
-  r.readAsText(file);
+ const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.prayers||!x.history)throw 0;if(confirm("Replace current tracker with this backup?")){data=normalize(x);save();render();showToast("Backup restored")}}catch{alert("Invalid backup file.")}e.target.value=""};r.readAsText(file)
 });
-
 function scrollToPrayers(){document.getElementById("prayerGrid").scrollIntoView({behavior:"smooth"})}
-
-document.querySelectorAll(".nav button").forEach(btn=>btn.addEventListener("click",()=>{
-  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
-  document.getElementById(btn.dataset.view).classList.add("active");
-  window.scrollTo({top:0,behavior:"smooth"});
-}));
-
+document.querySelectorAll(".nav button").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.getElementById(btn.dataset.view).classList.add("active");window.scrollTo({top:0,behavior:"smooth"})}));
 document.getElementById("modal").addEventListener("click",event=>{if(event.target.id==="modal")closeModal()});
 document.addEventListener("keydown",event=>{if(event.key==="Escape")closeModal()});
-
-document.getElementById("themeBtn").addEventListener("click",()=>{
-  data.theme=data.theme==="dark"?"light":"dark";
-  document.body.classList.toggle("dark",data.theme==="dark");
-  document.getElementById("themeBtn").textContent=data.theme==="dark"?"☀️":"🌙";
-  save();
-});
-
-function initTheme(){
-  document.body.classList.toggle("dark",data.theme==="dark");
-  document.getElementById("themeBtn").textContent=data.theme==="dark"?"☀️":"🌙";
-}
-
-function formatClock(value){
-  const totalMinutes=Math.round(value*60);
-  const hours=Math.floor(totalMinutes/60)%24;
-  const minutes=totalMinutes%60;
-  const suffix=hours>=12?"PM":"AM";
-  const hour12=((hours+11)%12)+1;
-  return `${hour12}:${String(minutes).padStart(2,"0")} ${suffix}`;
-}
-
-function degToRad(deg){return deg*Math.PI/180}
-function dayOfYear(date){
-  const start=new Date(date.getFullYear(),0,0); return Math.floor((date-start)/86400000)+1;
-}
-function getSolarNoon(date, longitude, timezone){
-  const n=dayOfYear(date);
-  const B=degToRad(360*(n-81)/364);
-  const equation=9.87*Math.sin(2*B)-7.53*Math.cos(B)-1.5*Math.sin(B);
-  return 12 + longitude/15 - timezone + equation/60;
-}
-function getHourAngle(lat, declination, angleInDegrees){
-  const latRad=degToRad(lat), decRad=degToRad(declination), angRad=degToRad(angleInDegrees);
-  const cosH=(Math.sin(angRad)-Math.sin(latRad)*Math.sin(decRad))/(Math.cos(latRad)*Math.cos(decRad));
-  return Math.acos(Math.max(-1,Math.min(1,cosH))) * 180 / Math.PI / 15;
-}
-function getDeclination(date){
-  const n=dayOfYear(date);
-  return 23.45*Math.sin(degToRad(360*(284+n)/365));
-}
-
-function getPrayerSchedule(date){
-  const settings=data.settings||DEFAULT_SETTINGS;
-  const lat=Number(settings.latitude || DEFAULT_SETTINGS.latitude);
-  const lon=Number(settings.longitude || DEFAULT_SETTINGS.longitude);
-  const tz=Number(settings.timezone || DEFAULT_SETTINGS.timezone);
-  const method=METHOD_CONFIG[settings.method]||METHOD_CONFIG.karachi;
-  const declination=getDeclination(date);
-  const noon=getSolarNoon(date, lon, tz);
-  const sunriseAngle=getHourAngle(lat, declination, -0.833);
-  const fajrAngle=getHourAngle(lat, declination, method.fajr);
-  const ishaAngle=getHourAngle(lat, declination, method.isha);
-  const asrDelay = settings.asrMethod === "hanafi" ? 2.1 : 1.6;
-  return {
-    fajr: noon - fajrAngle,
-    dhuhr: noon,
-    asr: noon + asrDelay,
-    maghrib: noon + sunriseAngle,
-    isha: noon + ishaAngle,
-    witr: noon + ishaAngle + 0.5
-  };
-}
-
-function populateLocationSelect(){
-  const select=document.getElementById("citySelect");
-  select.innerHTML="";
-  CITY_OPTIONS.forEach(city=>{
-    const option=document.createElement("option");
-    option.value=city.id; option.textContent=city.label; select.appendChild(option);
-  });
-  select.value=data.settings.cityId || DEFAULT_SETTINGS.cityId;
-}
-
-function getSelectedCity(){
-  const city=CITY_OPTIONS.find(c=>c.id===data.settings.cityId)||CITY_OPTIONS[0];
-  return {
-    ...city,
-    latitude:Number(data.settings.latitude ?? city.latitude),
-    longitude:Number(data.settings.longitude ?? city.longitude),
-    timezone:Number(data.settings.timezone ?? city.timezone)
-  };
-}
-
-function renderTimes(){
-  const settings=data.settings||DEFAULT_SETTINGS;
-  const city=getSelectedCity();
-  const schedule=getPrayerSchedule(new Date());
-  const list=document.getElementById("todayPrayerTimes");
-  const locationText=document.getElementById("locationSummary");
-  const dateText=document.getElementById("todayPrayerDate");
-  const citySelect=document.getElementById("citySelect");
-  const methodSelect=document.getElementById("methodSelect");
-  const asrMethodSelect=document.getElementById("asrMethodSelect");
-  const timezoneSelect=document.getElementById("timezoneSelect");
-
-  if(citySelect && !citySelect.value) citySelect.value=settings.cityId || DEFAULT_SETTINGS.cityId;
-  if(methodSelect) methodSelect.value=settings.method || DEFAULT_SETTINGS.method;
-  if(asrMethodSelect) asrMethodSelect.value=settings.asrMethod || DEFAULT_SETTINGS.asrMethod;
-  if(timezoneSelect) timezoneSelect.value=String(settings.timezone || DEFAULT_SETTINGS.timezone);
-
-  locationText.textContent=`City: ${city.label || "Karachi, Pakistan"} · ${METHOD_CONFIG[settings.method]?.label || "Karachi"} method`;
-  dateText.textContent=new Date().toLocaleDateString(undefined,{weekday:"short", month:"short", day:"numeric"});
-
-  list.innerHTML="";
-  const entries=[
-    {id:"fajr", label:"Fajr", time:schedule.fajr},
-    {id:"dhuhr", label:"Dhuhr", time:schedule.dhuhr},
-    {id:"asr", label:"Asr", time:schedule.asr},
-    {id:"maghrib", label:"Maghrib", time:schedule.maghrib},
-    {id:"isha", label:"Isha", time:schedule.isha},
-    {id:"witr", label:"Witr", time:schedule.witr}
-  ];
-
-  entries.forEach(entry=>{
-    const card=document.createElement("div");
-    card.className="card";
-    card.innerHTML=`
-      <div class="prayer-top">
-        <div class="prayer-name"><div class="prayer-emoji">${PRAYERS.find(p=>p.id===entry.id)?.emoji || "⏰"}</div><div><h4>${entry.label}</h4><small>Calculated time</small></div></div>
-        <div class="percent">${formatClock(entry.time)}</div>
-      </div>
-    `;
-    list.appendChild(card);
-  });
-}
-
-function renderCalendar(){
-  const monthDate=new Date(calendarYear, calendarMonth, 1);
-  const monthName=monthDate.toLocaleDateString(undefined,{month:"long",year:"numeric"});
-  document.getElementById("calendarMonthLabel").textContent=monthName;
-  const box=document.getElementById("scheduleCalendar");
-  box.innerHTML="";
-
-  const dayNames=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-  dayNames.forEach(day=>{
-    const el=document.createElement("div");
-    el.style.padding="8px 6px"; el.style.textAlign="center"; el.style.fontWeight="700"; el.style.color="var(--muted)"; el.textContent=day;
-    box.appendChild(el);
-  });
-
-  const firstDay=(new Date(calendarYear, calendarMonth, 1).getDay()+7)%7;
-  const totalDays=new Date(calendarYear, calendarMonth+1, 0).getDate();
-
-  for(let i=0;i<firstDay;i++){
-    const empty=document.createElement("div"); empty.style.minHeight="86px"; empty.style.border="1px solid var(--line)"; empty.style.borderRadius="12px"; empty.style.background="transparent"; box.appendChild(empty);
-  }
-
-  for(let day=1; day<=totalDays; day++){
-    const date=new Date(calendarYear, calendarMonth, day);
-    const schedule=getPrayerSchedule(date);
-    const card=document.createElement("div");
-    card.style.minHeight="86px";
-    card.style.border="1px solid var(--line)";
-    card.style.borderRadius="12px";
-    card.style.padding="8px";
-    card.style.background="var(--card)";
-    card.innerHTML=`
-      <div style="font-weight:800; margin-bottom:4px;">${day}</div>
-      <div style="font-size:10px; color:var(--muted)">${formatClock(schedule.fajr)} · Fajr</div>
-      <div style="font-size:10px; color:var(--muted)">${formatClock(schedule.dhuhr)} · Dhuhr</div>
-      <div style="font-size:10px; color:var(--muted)">${formatClock(schedule.asr)} · Asr</div>
-    `;
-    box.appendChild(card);
-  }
-}
-
-function applyCitySelection(){
-  const city=CITY_OPTIONS.find(c=>c.id===document.getElementById("citySelect").value) || CITY_OPTIONS[0];
-  data.settings.cityId=city.id;
-  data.settings.latitude=city.latitude;
-  data.settings.longitude=city.longitude;
-  data.settings.timezone=Number(document.getElementById("timezoneSelect").value || city.timezone);
-  data.settings.method=document.getElementById("methodSelect").value;
-  data.settings.asrMethod=document.getElementById("asrMethodSelect").value;
-  save(); render();
-}
-
-document.getElementById("citySelect").addEventListener("change", applyCitySelection);
-document.getElementById("methodSelect").addEventListener("change", applyCitySelection);
-document.getElementById("asrMethodSelect").addEventListener("change", applyCitySelection);
-document.getElementById("timezoneSelect").addEventListener("change", applyCitySelection);
-document.getElementById("refreshTimesBtn").addEventListener("click",()=>{renderTimes(); showToast("Prayer times refreshed");});
-
-document.getElementById("prevMonthBtn").addEventListener("click",()=>{calendarMonth--; if(calendarMonth<0){calendarMonth=11; calendarYear--;} renderCalendar();});
-document.getElementById("nextMonthBtn").addEventListener("click",()=>{calendarMonth++; if(calendarMonth>11){calendarMonth=0; calendarYear++;} renderCalendar();});
-
-document.getElementById("useLocationBtn").addEventListener("click",()=>{
-  if(!navigator.geolocation){showToast("Location access is not available in this browser."); return;}
-  navigator.geolocation.getCurrentPosition(position=>{
-    const lat=position.coords.latitude, lon=position.coords.longitude;
-    data.settings.useDeviceLocation=true;
-    data.settings.latitude=lat;
-    data.settings.longitude=lon;
-    data.settings.cityId="custom";
-    data.settings.timezone=Number(document.getElementById("timezoneSelect").value || 5);
-    save(); render(); showToast("Current location applied");
-  }, ()=>showToast("Location permission was not granted."));
-});
-
-function initPrayerSettings(){
-  populateLocationSelect();
-  const citySelect=document.getElementById("citySelect");
-  const methodSelect=document.getElementById("methodSelect");
-  const asrMethodSelect=document.getElementById("asrMethodSelect");
-  const timezoneSelect=document.getElementById("timezoneSelect");
-
-  citySelect.value=data.settings.cityId || DEFAULT_SETTINGS.cityId;
-  methodSelect.value=data.settings.method || DEFAULT_SETTINGS.method;
-  asrMethodSelect.value=data.settings.asrMethod || DEFAULT_SETTINGS.asrMethod;
-  timezoneSelect.value=String(data.settings.timezone || DEFAULT_SETTINGS.timezone);
-}
-
-initTheme();
-initPrayerSettings();
-render();
-if(!data.onboarding)setTimeout(openSetup,250);
+document.getElementById("themeBtn").addEventListener("click",()=>{data.theme=data.theme==="dark"?"light":"dark";document.body.classList.toggle("dark",data.theme==="dark");document.getElementById("themeBtn").textContent=data.theme==="dark"?"☀️":"🌙";save()});
+function initTheme(){document.body.classList.toggle("dark",data.theme==="dark");document.getElementById("themeBtn").textContent=data.theme==="dark"?"☀️":"🌙"}
+initTheme();render();if(!data.onboarding)setTimeout(openSetup,250);
 </script>
 </body>
 </html>
